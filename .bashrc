@@ -22,32 +22,32 @@ alias grep='grep --color=auto'
 
 # Get Git branch of current directory
 git_branch () {
-    if git rev-parse --git-dir >/dev/null 2>&1
-        then echo -e "" git:\($(git branch 2>/dev/null| sed -n '/^\*/s/^\* //p')\)
-    else
-        echo ""
+    if git rev-parse --git-dir > /dev/null 2>&1; then
+        local branch=$(git branch --show-current 2>/dev/null)
+        if [[ -n "$branch" ]]; then
+            echo -e " git:($branch)"
+        fi
     fi
 }
 
 # Set a specific color for the status of the Git repo
 git_color() {
-    local STATUS=`git status 2>&1`
-    if [[ "$STATUS" == *'Not a git repository'* ]]
-        then echo "" # nothing
-    else
-        if [[ "$STATUS" != *'working directory clean'* ]]
-            then echo -e '\033[0;31m' # red if need to commit
+    if git rev-parse --git-dir > /dev/null 2>&1; then
+        local status=$(git status --porcelain 2>/dev/null)
+        if [[ -z "$status" ]]; then
+            echo -e '\033[0;32m' # Green if clean
+        elif [[ "$status" == *"Your branch is ahead"* ]]; then
+            echo -e '\033[0;33m' # Yellow if need to push
         else
-            if [[ "$STATUS" == *'Your branch is ahead'* ]]
-                then echo -e '\033[0;33m' # yellow if need to push
-            else
-                echo -e '\033[0;32m' # else green
-            fi
+            echo -e '\033[0;31m' # Red if need to commit
         fi
+    else
+        echo -e '\033[01;34m' # Blue for normal directories
     fi
 }
 
-PROMPT='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[$(git_color)$(git_branch)\n\[\033[0;34m\]\$ '
+# Set prompt
+PROMPT_COMMAND='PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[$(git_color)$(git_branch)\]\n\[\033[0;34m\]\$ "'
 
 # Prompt: username@hostname in green, directory in blue, $ in default terminal color
 # export PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[33m\]\$(parse_git_branch)\[\033[00m\]\$ "
