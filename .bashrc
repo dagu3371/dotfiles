@@ -12,13 +12,21 @@ esac
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+alias eb='vim ~/dotfiles/.bashrc'
+alias sb='source ~/.bashrc'
+alias c='clear'
 
 # Color support for ls and grep
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 
 # Prompt: username@hostname in green, directory in blue, $ in default terminal color
-export PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[33m\]\$(parse_git_branch)\[\033[00m\]\$ "
+# export PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[33m\]\$(parse_git_branch)\[\033[00m\]\$ "
+
+# Default prompt
+PROMPT='%n@%m:%~$(parse_git_branch) %#'
+
+export PATH="/usr/local/bin:$PATH"
 
 # Default Editor
 export EDITOR='vim'  # Change vim to whatever you prefer
@@ -60,6 +68,14 @@ alias gc='git commit'
 alias gd='git diff'
 alias gb='git branch'
 alias gco='git checkout'
+
+# fzf aliases
+# use fp to do a fzf search and preview the files
+# alias fp="find . -type f 2> /dev/null | fzf --preview 'batcat --style=numbers --color=always --line-range :500 {}'"
+alias fp="fzf --preview 'batcat --style=numbers --color=always --line-range :500 {}'"
+
+# search for a file with fzf and open it in vim
+alias vf='vim $(fp)'
 
 # For setting history length see HISTSIZE and HISTFILESIZE above
 # Ensure safety with interactive rm
