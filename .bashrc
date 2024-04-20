@@ -1,19 +1,18 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
 
 # Note: PS1 and other variables should work with interactive shells.
-
 # If not running interactively, don't do anything
 case $- in
-    *i*) ;;
-      *) return;;
+*i*) ;;
+*) return ;;
 esac
 
 # Alias definitions
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
-alias eb='vim ~/dotfiles/.bashrc'
-alias ev='vim ~/dotfiles/vim/.vimrc'
+alias eb='nvim ~/dotfiles/.bashrc'
+alias ev='nvim ~/dotfiles/vim/.vimrc'
 alias sb='source ~/.bashrc'
 alias c='clear'
 
@@ -27,7 +26,7 @@ eval "$(starship init bash)"
 export PATH="/usr/local/bin:$PATH"
 
 # Default Editor
-export EDITOR='vim'  # Change vim to whatever you prefer
+export EDITOR='nvim' # Change vim to whatever you prefer
 
 # Path
 export PATH="$PATH:$HOME/bin"
@@ -35,7 +34,7 @@ export PATH="$PATH:$HOME/bin"
 # History Control
 export HISTSIZE=1000
 export HISTFILESIZE=2000
-export HISTCONTROL=ignoreboth:erasedups  # Ignore duplicates, spaces, and both
+export HISTCONTROL=ignoreboth:erasedups # Ignore duplicates, spaces, and both
 
 # Case-insensitive tab completion
 bind "set completion-ignore-case on"
@@ -56,7 +55,7 @@ shopt -s histappend
 
 # Git branch in prompt
 parse_git_branch() {
-    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+	git branch 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
 
 # Git aliases
@@ -73,7 +72,7 @@ alias gco='git checkout'
 alias fp="fzf --preview 'batcat --style=numbers --color=always --line-range :500 {}'"
 
 # search for a file with fzf and open it in vim
-alias vf='vim $(fp)'
+alias vf='v $(fp)'
 
 # For setting history length see HISTSIZE and HISTFILESIZE above
 # Ensure safety with interactive rm
@@ -81,8 +80,11 @@ alias rm='rm -i'
 
 # Load custom scripts if they exist
 if [ -f "$HOME/.bash_aliases" ]; then
-    . "$HOME/.bash_aliases"
+	. "$HOME/.bash_aliases"
 fi
 if [ -f "$HOME/.bash_custom" ]; then
-    . "$HOME/.bash_custom"
+	. "$HOME/.bash_custom"
 fi
+export DISPLAY=172.21.16.1:0.0
+export DISPLAY=172.21.16.1:0.0
+export DISPLAY=172.21.16.1:0.0
