@@ -22,7 +22,7 @@ alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 
 # Prompt
-starship preset pure-preset -o ~/.config/starship.toml
+eval "$(starship init bash)"
 
 export PATH="/usr/local/bin:$PATH"
 

@@ -10,21 +10,23 @@ $line_break\
 $python\
 $character"""
 
-[cmd_duration]
-disabled = true
+# Configure the hostname module
+[hostname]
+ssh_only = false
+format = "[$hostname]($style) "
+style = "bold purple"
 
 [directory]
 style = "bold blue"
 
-[character]
-success_symbol = "[❯](purple)"
-error_symbol = "[❯](red)"
-vimcmd_symbol = "[❮](green)"
-
 [git_branch]
 format = "[$branch]($style)"
-style = "bold purple"
+style = "bold red"
+
+[cmd_duration]
+disabled = true
 
 [python]
 format = "[$virtualenv]($style) "
-style = "bright-black"
+style = "purple"
+
