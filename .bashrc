@@ -33,13 +33,17 @@ git_branch () {
 # Set a specific color for the status of the Git repo
 git_color() {
     if git rev-parse --git-dir > /dev/null 2>&1; then
-        local status=$(git status --porcelain 2>/dev/null)
-        if [[ -z "$status" ]]; then
-            echo -e '\033[0;32m' # Green if clean
-        elif [[ "$status" == *"Your branch is ahead"* ]]; then
-            echo -e '\033[0;33m' # Yellow if need to push
+        # Check if there are uncommitted changes
+        if ! git diff --quiet || ! git diff --cached --quiet; then
+            echo -e '\033[0;31m' # Red if there are changes that need to be committed
         else
-            echo -e '\033[0;31m' # Red if need to commit
+            # Check if the local branch is ahead of the remote
+            local ahead=$(git status --porcelain=v2 --branch | grep ahead | grep -o '[0-9]*')
+            if [[ "$ahead" != "" ]]; then
+                echo -e '\033[0;33m' # Yellow if the local branch is ahead of its upstream branch
+            else
+                echo -e '\033[0;32m' # Green if everything is clean and up-to-date
+            fi
         fi
     else
         echo -e '\033[01;34m' # Blue for normal directories
