@@ -13,6 +13,7 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 alias eb='vim ~/dotfiles/.bashrc'
+alias ev='vim ~/dotfiles/vim/.vimrc'
 alias sb='source ~/.bashrc'
 alias c='clear'
 
@@ -20,44 +21,8 @@ alias c='clear'
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 
-# Get Git branch of current directory
-git_branch () {
-    if git rev-parse --git-dir > /dev/null 2>&1; then
-        local branch=$(git branch --show-current 2>/dev/null)
-        if [[ -n "$branch" ]]; then
-            echo -e " git:($branch)"
-        fi
-    fi
-}
-
-# Set a specific color for the status of the Git repo
-git_color() {
-    if git rev-parse --git-dir > /dev/null 2>&1; then
-        # Check if there are uncommitted changes
-        if ! git diff --quiet || ! git diff --cached --quiet; then
-            echo -e '\033[0;31m' # Red if there are changes that need to be committed
-        else
-            # Check if the local branch is ahead of the remote
-            local ahead=$(git status --porcelain=v2 --branch | grep ahead | grep -o '[0-9]*')
-            if [[ "$ahead" != "" ]]; then
-                echo -e '\033[0;33m' # Yellow if the local branch is ahead of its upstream branch
-            else
-                echo -e '\033[0;32m' # Green if everything is clean and up-to-date
-            fi
-        fi
-    else
-        echo -e '\033[01;34m' # Blue for normal directories
-    fi
-}
-
-# Set prompt
-PROMPT_COMMAND='PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[$(git_color)$(git_branch)\]\n\[\033[0;34m\]\$ "'
-
-# Prompt: username@hostname in green, directory in blue, $ in default terminal color
-# export PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[33m\]\$(parse_git_branch)\[\033[00m\]\$ "
-
-# Default prompt
-# PROMPT='%n@%m:%~$(parse_git_branch) %#'
+# Prompt
+starship preset pure-preset -o ~/.config/starship.toml
 
 export PATH="/usr/local/bin:$PATH"
 
